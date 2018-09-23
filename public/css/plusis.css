@@ -1,0 +1,80 @@
+/**-----------------------------------CLASES PERSONALIZADAS NILTON---------------------------------------------------------*/
+
+
+
+ .aprobado{
+
+background-color: #E9FCFA;
+border: 1px dashed #006600;
+padding: 8px;
+margin-bottom: 10px;
+}
+
+.rechazado{
+
+background-color: #FFEDED;
+border: 1px dashed #FA206A;
+padding: 8px;
+margin-bottom: 10px;
+}
+
+
+
+
+.div_contenido {
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 #222;
+  -webkit-box-shadow: 0 0 20px 0 #222;
+  -moz-box-shadow: 0 0 20px 0 #222;
+  display: none;
+  height: auto;
+  margin-left: 2%;
+  margin-right: 2%;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  position: absolute;
+  top: 6%;
+  width: auto;
+  min-height: 90%;
+  z-index: 1050;
+}
+.div_contenido2 {
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 #222;
+  -webkit-box-shadow: 0 0 20px 0 #222;
+  -moz-box-shadow: 0 0 20px 0 #222;
+  display: none;
+  height: auto;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 2%;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  position: absolute;
+  top: 10%;
+  width: auto;
+  min-height: auto;
+  z-index: 1050;
+}
+
+.box-gris{
+background-color:#ecf0f5 !important;
+}
+
+.box-white{
+background-color:#fff !important;
+}
+
+.form-group {
+ 
+  margin-bottom: 1px;
+}
+
+.form-control {
+  border-radius: 0;
+  box-shadow: none;
+  border-color: #b1cada;
+  margin-bottom: 5px;
+}
