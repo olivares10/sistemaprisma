@@ -59,7 +59,7 @@
 									<th>Salario P. = (Cant*PU)</th>
 								</thead>
 								@foreach ($actividades as $actividad)
-								<tr>
+								<tr>								
 									<td>{{$actividad->Descripcion}} </td>																
 									<td>{{$actividad->Cantidad}} </td>
 									<td>{{$actividad->Precio_U}} </td>															

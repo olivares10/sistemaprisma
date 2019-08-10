@@ -784,6 +784,47 @@ class Planilla_cicloController extends Controller
          return view('/planilla_Ciclo.dplanillaingA',["planillas"=>$planilla,"data"=>$data,"ingresos"=>$otros_ingresos]); 
     }
 
+    public function editrestproduccion($id)
+    {   
+      
+        $planilla_produccion=DB::table('planilla_produccion')   
+        ->select('ID_Equipo') 
+        ->where('ID','=',$id)->first()  ;
+        $ID_Equipo= $planilla_produccion->ID_Equipo; 
+        
+        DB::table('planilla_produccion')->where('ID', '=', $id)->delete();
+       
+        $sql = "call Agregar_produccion(?)";
+        
+        DB::select($sql,array($ID_Equipo)); 
+
+        $equipo_produccion_planilla=DB::table('equipo_produccion_planilla')   
+        ->select('Tipo_produccion') 
+        ->where('ID','=',$ID_Equipo)->first()  ;
+       // dd($equipo_produccion_planilla);
+        $T_planilla= $equipo_produccion_planilla->Tipo_produccion;
+
+        
+
+         //return redirect()->action('Planilla_cicloController@editsumproduccionA', ['id' => $ID_Equipo]);
+
+         switch($T_planilla) {                
+            case 2://produccion Oficial
+            
+        return redirect()->action('Planilla_cicloController@editsumproduccionA', ['id' => $ID_Equipo]);
+        break;
+        case 1://produccion Auxiliar
+        return redirect()->action('Planilla_cicloController@editsumproduccionO', ['id' => $ID_Equipo]);
+        break;
+        default:
+        return Redirect::back();
+        break;
+                            }
+
+    }
+
+
+
     public function editsumproduccionO($id)
     {   
         $data=DB::table('vw_detalleplanilla')     
@@ -791,7 +832,11 @@ class Planilla_cicloController extends Controller
 
         $otros_ingresos=DB::table('vw_ingresos')     
         ->paginate(1000);
-
+        $actividades=DB::table('planilla_produccion as pp')  
+        ->join('actividades as a', 'a.ID','=','pp.ID_Actividad')   
+        ->select ('pp.ID','a.Codigo','pp.Descripcion','pp.Cantidad','pp.Precio_U','pp.Salario_Parcial')
+        ->where('ID_Equipo','=',$id)     
+        ->paginate(200) ;
          
         $SDias_T=DB::table('vw_detalleplanilla')    
         ->select(DB::raw('SUM(Dias_trabajados) as Dias_trabajados')) 
@@ -804,7 +849,7 @@ class Planilla_cicloController extends Controller
 
          $ID_TipoEquipo=1;
          //dd($request);
-         return view('/planilla_Ciclo.dplanillaingActividades',["planillas"=>$planilla,"SDias_T"=>$SDias_T,"data"=>$data,"ingresos"=>$otros_ingresos,"ID_TipoEquipo"=>$ID_TipoEquipo]); 
+         return view('/planilla_Ciclo.dplanillaingActividades',["planillas"=>$planilla,"SDias_T"=>$SDias_T,"data"=>$data,"ingresos"=>$otros_ingresos,"ID_TipoEquipo"=>$ID_TipoEquipo,"data"=>$data,"ingresos"=>$otros_ingresos,"ID_TipoEquipo"=>$ID_TipoEquipo,"actividades"=>$actividades]); 
     }
 
     
@@ -815,8 +860,15 @@ class Planilla_cicloController extends Controller
 
         $otros_ingresos=DB::table('vw_ingresos')     
         ->paginate(1000);
+      
 
-         
+        $actividades=DB::table('planilla_produccion as pp')  
+        ->join('actividades as a', 'a.ID','=','pp.ID_Actividad')   
+        ->select ('pp.ID','a.Codigo','pp.Descripcion','pp.Cantidad','pp.Precio_U','pp.Salario_Parcial')
+        ->where('ID_Equipo','=',$id)     
+        ->paginate(200) ;
+       // dd($actividades);
+
         $SDias_T=DB::table('vw_detalleplanilla')    
         ->select(DB::raw('SUM(Dias_trabajados) as Dias_trabajados')) 
         ->where('ID_epp','=',$id)     
@@ -828,7 +880,7 @@ class Planilla_cicloController extends Controller
 
          $ID_TipoEquipo=2;
          //dd($request);
-         return view('/planilla_Ciclo.dplanillaingActividades',["planillas"=>$planilla,"SDias_T"=>$SDias_T,"data"=>$data,"ingresos"=>$otros_ingresos,"ID_TipoEquipo"=>$ID_TipoEquipo]); 
+         return view('/planilla_Ciclo.dplanillaingActividades',["planillas"=>$planilla,"SDias_T"=>$SDias_T,"data"=>$data,"ingresos"=>$otros_ingresos,"ID_TipoEquipo"=>$ID_TipoEquipo,"actividades"=>$actividades]); 
     }
 
 
@@ -849,9 +901,9 @@ class Planilla_cicloController extends Controller
          ->where('ID_epp','=',$id)   
          ->paginate(20);
 
-         $ID_TipoEquipo=2;
-         //dd($request);
-         return view('/planilla_Ciclo.detalleProduccion',["planillas"=>$planilla,"actividades"=>$actividades,"data"=>$data,"ingresos"=>$otros_ingresos,"ID_TipoEquipo"=>$ID_TipoEquipo]); 
+     
+         //dd($actividades);
+         return view('/planilla_Ciclo.detalleProduccion',["planillas"=>$planilla,"actividades"=>$actividades,"data"=>$data,"ingresos"=>$otros_ingresos]); 
     }
     /**
      * Update the specified resource in storage.
@@ -922,6 +974,8 @@ class Planilla_cicloController extends Controller
     public function AplicarActividades(Request $request)
     {
         //
+        
+         
         try{
             DB::beginTransaction();            
 
@@ -957,11 +1011,10 @@ class Planilla_cicloController extends Controller
             DB::rollback();
         }
         
-        $ID_equipo=$request->get('ID_equipo');
-
+       // dd($ID_Equipo);
         $sql = "call Agregar_produccion(?)";
-        
-        DB::select($sql,array($ID_equipo)); 
+        $ID_Equipo=$request->get('ID_equipo');
+        DB::select($sql,array($ID_Equipo)); 
         
 
         $ID_planilla=$request->get('ID_Planilla');

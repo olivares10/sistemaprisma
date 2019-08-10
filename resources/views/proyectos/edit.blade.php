@@ -136,7 +136,7 @@
                             @foreach ($empleadodetalle as $empled)
 								<tr>
                                     <td>										
-										<a href=""><button class="btn btn-warning" >x</button></a>									
+                                    <a href="{{url('editempleProy',$empled->ID_DETALLE_PROYECTO)}}"<button class="btn btn-warning" >X</button></a>									
 									</td>
                                     <td>{{$empled->Cod_Empleado}}</td>
 									<td>{{$empled->Empleado}} </td>	

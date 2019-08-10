@@ -107,7 +107,7 @@ class AsistenciaController extends Controller
 
         ->select ('asp.ID_ASISTENCIA','e.Cod_Empleado','e.ID_EMPLEADO',DB::raw('CONCAT(e.PRIMER_NOMBRE," ",e.SEGUNDO_NOMBRE," ",e.PRIMER_APELLIDO," ",e.SEGUNDO_APELLIDO) as Empleado'),'c.ID_Cargo','c.Nombre_Cargo')
         ->where('asp.ID_PLANILLA','=',$id)
-        //->where('dp.ACTIVO','=','1')
+        ->where('asp.ANULADO','=','0')
         ->where('e.ID_ESTADO','=','1')->get();   
        
         return view('asistencia.detalleProyecA',["empleadodetalle"=>$proyectodetalle]);
@@ -140,7 +140,7 @@ class AsistenciaController extends Controller
         ->select ('da.ID_DETALLE','asp.ID_ASISTENCIA','da.FECHA','da.HORAS_LABORADAS','asp.HORAS_EXTRAS','da.HORA_LLEGADA','da.HORA_SALIDA')
         ->where('asp.ID_ASISTENCIA','=',$id)
         ->where('da.ANULADO','=','0')->get(); 
-       //dd($data);
+       //dd($data2);
         return view('asistencia.dasistenciaingDias',["data"=>$data,"data2"=>$data2]);
     }
     else
@@ -196,7 +196,10 @@ class AsistenciaController extends Controller
 
         
         $ID_asistencia=$request->get('ID_asistencia');
-  
+        
+        $sql = "call updateAsistenciaP(?)";       
+        DB::select($sql,array($ID_asistencia));
+
         return redirect()->action('AsistenciaController@dasistenciaingDias', ['id' => $ID_asistencia]);
          
     }
@@ -223,21 +226,25 @@ class AsistenciaController extends Controller
         $Asistencia=DB::table('detalle_asistencia')   
         ->select('ID_ASISTENCIA','HORAS_LABORADAS') 
         ->where('ID_DETALLE','=',$id)->first()  ;
-        $cont= $Asistencia->ID_ASISTENCIA; 
+        $ID_A= $Asistencia->ID_ASISTENCIA; 
         $HORAS= $Asistencia->HORAS_LABORADAS;
 
         $selectA=DB::table('asistencia')   
         ->select('HORAS_LABORADAS') 
-        ->where('ID_ASISTENCIA','=',$id)->first()  ;
+        ->where('ID_ASISTENCIA','=',$ID_A)->first()  ;
         $HORAS2= $selectA->HORAS_LABORADAS;        
         $HORAS_LABORADAS=($HORAS2-$HORAS);
         $Dias_trabajados=($HORAS_LABORADAS/8);
 
-        $upasistencia=Asistencia::findOrFail($id);
+        $upasistencia=Asistencia::findOrFail($ID_A);
         $upasistencia->HORAS_LABORADAS=$HORAS_LABORADAS;
         $upasistencia->Dias_trabajados=$Dias_trabajados;
         $upasistencia->update();
-        return redirect()->action('AsistenciaController@dasistenciaingDias', ['ID' => $cont]);
+        //dd($ID_A);
+        $sql = "call updateAsistenciaP(?)";       
+        DB::select($sql,array($ID_A));
+
+        return redirect()->action('AsistenciaController@dasistenciaingDias', ['ID' => $ID_A]);
 
 
         //return Redirect::to('/planillas');

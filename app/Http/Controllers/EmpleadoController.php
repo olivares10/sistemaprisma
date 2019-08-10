@@ -93,7 +93,7 @@ class EmpleadoController extends Controller
         $empleado->FECHA_INGRESO=$request->get('FECHA_INGRESO');
         $empleado->Salario_Base=$request->get('Salario_Base'); 
         $empleado->Sindicalizado='0';
-        $empleado->ID_User=$request->get('ID_User'); 
+       // $empleado->ID_User=$request->get('ID_User'); 
         $empleado->Cod_Empleado='000';
         $empleado->Salario_V='0';
         $empleado->ID_ESTADO='1';
@@ -129,6 +129,54 @@ class EmpleadoController extends Controller
         return view('/empleados.edit',["empleados"=>$empleado,"cargos"=>$cargo,"estado_empleados"=>$estado_empleados,"users"=>$users]);
     }
 
+    public function detalleEmpleado($id)
+    {
+        //        ->select('e.Cod_Empleado','Dias_trabajados','e.ID_EMPLEADO','c.Nombre_Cargo',DB::raw('CONCAT(e.PRIMER_NOMBRE," ",e.SEGUNDO_NOMBRE," ",e.PRIMER_APELLIDO," ",e.SEGUNDO_APELLIDO) as Nombre_Empleado'),'Precio_Del_Dia','Salario_O','Septimo_D','Horas_Extras','Valor_Horas_E',
+       
+        $empleado=DB::table('empleado as e')
+        ->join('cargo as c', 'e.ID_CARGO','=','c.ID_Cargo')       
+        // ->select ('e.Cod_Empleado','e.ID_EMPLEADO','e.PRIMER_NOMBRE','e.SEGUNDO_NOMBRE','e.PRIMER_APELLIDO','e.SEGUNDO_APELLIDO','c.ID_Cargo','c.Nombre_Cargo')
+        ->select ('e.Cod_Empleado','e.ID_EMPLEADO',DB::raw('CONCAT(e.PRIMER_NOMBRE," ",e.SEGUNDO_NOMBRE," ",e.PRIMER_APELLIDO," ",e.SEGUNDO_APELLIDO) as Empleado'),'c.ID_Cargo','c.Nombre_Cargo','e.VACACIONES_DISPONIBLES','e.ESTADO_CIVIL','e.CEDULA',
+        'e.DIRECCION','e.ANIOS_EXPERIENCIA','e.Email','e.FECHA_INGRESO','NO_INSS','VACACIONES_DISPONIBLES','e.Salario_Base','e.Sindicalizado','e.Telefono','e.Celular')
+        ->where('e.ID_EMPLEADO','=',$id)->first();
+        
+        $DV=DB::table('detalle_vacaciones')             
+        ->select ('FECHA_SOLICITUD as Fecha',DB::raw('CONCAT("vacaciones: numero de dias: ",NUMERO_DIAS," , Inicio: ",FECHA_INICIO," , Fin: ",FECHA_FIN) as Detalle') );
+       // ->where('ID_EMPLEADO','=',$id)->get();
+      
+        $bitacora=DB::table('bitacora_empleado')             
+        ->select ('Fecha', 'Detalle')
+        ->union($DV)
+        ->where('ID_EMPLEADO','=',$id)
+        ->orderby('Fecha')
+        ->get();
+        //dd($bitacora);
+
+
+
+        return view('/empleados.detalle',["empleados"=>$empleado,"bitacora"=>$bitacora]);
+    }
+
+
+
+    public function asignarUsuario($id)
+    {
+        //        ->select('e.Cod_Empleado','Dias_trabajados','e.ID_EMPLEADO','c.Nombre_Cargo',DB::raw('CONCAT(e.PRIMER_NOMBRE," ",e.SEGUNDO_NOMBRE," ",e.PRIMER_APELLIDO," ",e.SEGUNDO_APELLIDO) as Nombre_Empleado'),'Precio_Del_Dia','Salario_O','Septimo_D','Horas_Extras','Valor_Horas_E',
+       
+        $empleado=DB::table('empleado as e')
+        ->join('cargo as c', 'e.ID_CARGO','=','c.ID_Cargo')       
+        // ->select ('e.Cod_Empleado','e.ID_EMPLEADO','e.PRIMER_NOMBRE','e.SEGUNDO_NOMBRE','e.PRIMER_APELLIDO','e.SEGUNDO_APELLIDO','c.ID_Cargo','c.Nombre_Cargo')
+        ->select ('e.Cod_Empleado','e.ID_EMPLEADO',DB::raw('CONCAT(e.PRIMER_NOMBRE," ",e.SEGUNDO_NOMBRE," ",e.PRIMER_APELLIDO," ",e.SEGUNDO_APELLIDO) as Empleado'),'c.ID_Cargo','c.Nombre_Cargo','e.VACACIONES_DISPONIBLES','e.ESTADO_CIVIL','e.CEDULA',
+        'e.DIRECCION','e.ANIOS_EXPERIENCIA','e.Email','e.FECHA_INGRESO','NO_INSS','VACACIONES_DISPONIBLES','e.Salario_Base','e.Sindicalizado','e.Telefono','e.ID_User')
+        ->where('e.ID_EMPLEADO','=',$id)->first();
+        
+
+        $users=DB::table('users')->get();
+
+
+
+        return view('/empleados.usuario',["empleados"=>$empleado,"users"=>$users]);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -139,7 +187,7 @@ class EmpleadoController extends Controller
     public function update(EmpleadoFormReques $request, $id)
     {
         //
-       
+     
         $empleado=empleados::findOrFail($id);
         $empleado->PRIMER_NOMBRE=$request->get('PRIMER_NOMBRE');
         $empleado->SEGUNDO_NOMBRE=$request->get('SEGUNDO_NOMBRE');
@@ -157,8 +205,9 @@ class EmpleadoController extends Controller
         $empleado->FECHA_INGRESO=$request->get('FECHA_INGRESO');
         $empleado->Salario_Base=$request->get('Salario_Base'); 
         $empleado->ID_ESTADO=$request->get('ID_ESTADO');    
-        $empleado->ID_User=$request->get('ID_User'); 
-        $empleado->Cod_Empleado->get('Cod_Empleado');  
+        //$empleado->ID_User=$request->get('ID_User'); 
+        
+        $empleado->Cod_Empleado=$request->get('Cod_Empleado');  
         //$empleado->Sindicalizado=$request->get('Sindicalizado'); 
         $Sindicalizado=$request->get('Sindicalizado');
         if ($Sindicalizado == 'on')
@@ -202,5 +251,17 @@ class EmpleadoController extends Controller
           $empleado->ID_ESTADO='0';
           $empleado->update();
           return Redirect::to('/empleados');
+    }
+
+    public function empleadoUser(Request $request)
+    {
+        //
+            $ID_EMPLEADO=$request->get('ID_EMPLEADO');
+            //dd($ID_EMPLEADO);
+            $empleado=empleados::findOrFail($ID_EMPLEADO);        
+            $empleado->ID_User=$request->get('ID_User');
+            $empleado->update();
+            
+            return Redirect::to('/empleados');
     }
 }

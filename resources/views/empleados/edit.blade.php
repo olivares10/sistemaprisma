@@ -115,28 +115,6 @@
                  </div>
              </div>
              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                 <div class="form-group">    
-                     <label>Sindicalizado</label>
-                     @if ($empleados->Sindicalizado==0)
-                     <input  name="Sindicalizado" type="checkbox" >
-                    @else
-                    <input checked="checked" name="Sindicalizado" type="checkbox">
-                    @endif  
-                     
-                 </div>
-             </div>
-             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                 <div class="form-group">    
-                     <label>Salario Variable</label>
-                     @if ($empleados->Salario_V==0)
-                     <input  name="Salario_V" type="checkbox" >
-                    @else
-                    <input checked="checked" name="Salario_V" type="checkbox">
-                    @endif  
-                     
-                 </div>
-             </div>
-             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                  <div >
                      <label for="NO_INSS">NO_INSS</label>
                      <input type="text" name="NO_INSS" class="form-control" value="{{$empleados->NO_INSS}}" placeholder="NO_INSS..." >
@@ -184,7 +162,30 @@
                      <input type="text" name="DIRECCION" required class="form-control" value="{{$empleados->DIRECCION}}" placeholder="Direccion..." >
                  </div>
              </div>
+             </br>
              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                 <div class="form-group">    
+                     <label>Sindicalizado</label>
+                     @if ($empleados->Sindicalizado==0)
+                     <input  name="Sindicalizado" type="checkbox" >
+                    @else
+                    <input checked="checked" name="Sindicalizado" type="checkbox">
+                    @endif  
+                     
+                 </div>
+             </div>
+             </br>
+             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                 <div class="form-group">    
+                     <label>Salario Variable</label>
+                     @if ($empleados->Salario_V==0)
+                     <input  name="Salario_V" type="checkbox" >
+                    @else
+                    <input checked="checked" name="Salario_V" type="checkbox">
+                    @endif                       
+                 </div>
+             </div>
+         <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                  <div class="form-group">    
                      <label>Usuario del sistema</label>
                 <select name="ID_User" class="form-control">
@@ -197,7 +198,7 @@
                       @endforeach  
                 </select>   
                  </div>
-             </div>
+             </div>-->
          </div> 
      
                  <div class="form-group">

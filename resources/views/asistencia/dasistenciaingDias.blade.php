@@ -128,7 +128,7 @@ label {
 							<label for="appt-time">Time:</label>
 							<input type="time" id="appt-time" name="appttime1"
 							min="08:00" max="17:00" />
-							<span class="hours">Office hours: 8AM to 6PM</span>
+							<span class="hours">Office hours: 8AM to 5PM</span>
 							</div>
 
        				 </div>
@@ -143,7 +143,7 @@ label {
 						<label for="appt-time">Time:</label>
 						<input type="time" id="appt-time2" name="appttime2"
 						min="08:00" max="17:00" />
-						<span class="hours">Office hours: 8AM to 6PM</span>
+						<span class="hours">Office hours: 8AM to 5PM</span>
 					</div>
 
 

@@ -73,10 +73,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/Liquidacion', 'LiquidacionController');
     Route::resource('/LiquidacionV', 'LiquidacionVController');
     Route::resource('/Aguinaldo', 'AguinaldoController');
+    Route::resource('/vacaciones', 'VacacionesController');    
 
-    
+    Route::get('detalleEmpleado/{ID}', 'EmpleadoController@detalleEmpleado');
+    Route::get('asignarUsuario/{ID}', 'EmpleadoController@asignarUsuario');
+
     Route::get('editsumproduccionO/{ID}', 'Planilla_cicloController@editsumproduccionO');
     Route::get('editsumproduccionA/{ID}', 'Planilla_cicloController@editsumproduccionA');
+    Route::get('editrestproduccion/{ID}', 'Planilla_cicloController@editrestproduccion'); 
+    Route::get('editempleProy/{ID}', 'ProyectosController@editempleProy');
 
     Route::get('detalleProduccion/{ID}', 'Planilla_cicloController@detalleProduccion');
 
@@ -131,5 +136,6 @@ Route::group(['middleware' => 'auth'], function () {
     //Route::get('/listado_areas', 'EmpleadosController@listado_areas');
     Route::post('spliquidacionSF', 'LiquidacionController@spliquidacionSF');
     Route::post('spliquidacionSV', 'LiquidacionVController@spliquidacionSV');
+    Route::post('empleadoUser', 'EmpleadoController@empleadoUser');
 });
 

@@ -64,6 +64,7 @@
                 <ul class="treeview-menu">
                     <!-- /<li><a href="{{ url('listado_empleados') }}">Listado Personal</a></li>-->
                     <li><a href="{{ url('empleados') }}">Listado de Personal</a></li>
+                    <li><a href="{{ url('vacaciones') }}">Vacaciones</a></li>
                     <li><a href="{{ url('lista_negra') }}">lista negra</a></li>
                     <li><a href="#"></a></li>
                 </ul>
@@ -82,8 +83,8 @@
                 <ul class="treeview-menu">
                    <!-- /. <li><a href="{{ url('listado_areas') }}">Areas</a></li> -->
                    <li><a href="{{ url('asistencia') }}">Asistencia</a></li>    
-                   <li><a href="{{ url('llega_tarde') }}">Llegadas tarde</a></li>               
-                   <!-- /. <li><a href="{{ url('cargos') }}">Empleados en Proyectos</a></li>-->
+                   <!-- /.<li><a href="{{ url('llega_tarde') }}">Llegadas tarde</a></li>               
+                    <li><a href="{{ url('cargos') }}">Empleados en Proyectos</a></li>-->
                     <li><a href="#"></a></li>
                 </ul>
             </li>

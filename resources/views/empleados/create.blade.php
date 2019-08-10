@@ -130,7 +130,7 @@
                 <input type="text" name="DIRECCION" required class="form-control" value="{{old('DIRECCION')}}" placeholder="Direccion..." >
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                  <div class="form-group">    
                      <label>Usuario del sistema</label>
                 <select name="ID_User" class="form-control">
@@ -139,7 +139,7 @@
                       @endforeach  
                 </select>   
                  </div>
-             </div>
+             </div>-->
     </div> 
 
             <div class="form-group">

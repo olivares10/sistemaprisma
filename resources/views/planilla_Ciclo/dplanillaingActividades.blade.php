@@ -172,7 +172,17 @@
                                 <th>Salario Parcial</th>  								 
                                 
                             </thead>
-
+							@foreach ($actividades as $actividad)
+								<tr>
+								<td >
+								<a href="{{url('editrestproduccion',$actividad->ID)}}"<button class="btn btn-warning" >X</button></a>
+								</td>								
+									<td>{{$actividad->Codigo}} </td>																
+									<td>{{$actividad->Descripcion}} </td>
+									<td>{{$actividad->Cantidad}} </td>															
+									<td>{{$actividad->Salario_Parcial}} </td>
+								<tr>								
+								@endforeach
                             <tbody>
 
                             </tbody>

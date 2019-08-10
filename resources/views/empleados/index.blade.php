@@ -66,7 +66,12 @@
 									<td> </td>									
 									<td>
 										<a href="{{URL::action('EmpleadoController@edit',$empl->ID_EMPLEADO)}}"><button class="btn btn-info" >Editar</button></a>
-										<a href=""><button class="btn btn-info" >Detalle</button></a>
+										<a href="{{URL::action('EmpleadoController@detalleEmpleado',$empl->ID_EMPLEADO)}}"><button class="btn btn-info" >Detalle</button></a>
+										@role('administrador') 
+										<a href="{{URL::action('EmpleadoController@asignarUsuario',$empl->ID_EMPLEADO)}}"><button class="btn btn-info" >Asignar usuario</button></a>
+										@else        
+
+		  								 @endrole
 										<!--<a href=""data-target="#modal-delete-{{$empl->ID_EMPLEADO}}" data-toggle="modal"><button class="btn btn-danger" >Imagen</button></a>-->
 									</td>
 								<tr>

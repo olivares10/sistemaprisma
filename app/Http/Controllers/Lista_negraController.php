@@ -29,6 +29,8 @@ class Lista_negraController extends Controller
         if ($request)
         {
         $query=trim($request->get('searchText'));
+
+
         $empleado=DB::table('empleado as e')
         ->join('cargo as c','e.ID_CARGO','=','c.ID_Cargo')
         ->join('area as a','c.ID_Area','=','a.ID_Area')        
@@ -59,6 +61,7 @@ class Lista_negraController extends Controller
         ->join('cargo as c', 'e.ID_CARGO','=','c.ID_Cargo')
         // ->select ('e.Cod_Empleado','e.ID_EMPLEADO','e.PRIMER_NOMBRE','e.SEGUNDO_NOMBRE','e.PRIMER_APELLIDO','e.SEGUNDO_APELLIDO','c.ID_Cargo','c.Nombre_Cargo')
         ->select ('e.Cod_Empleado','e.CEDULA','e.ID_EMPLEADO',DB::raw('CONCAT(e.PRIMER_NOMBRE," ",e.SEGUNDO_NOMBRE," ",e.PRIMER_APELLIDO," ",e.SEGUNDO_APELLIDO) as Empleado'),'c.ID_Cargo','c.Nombre_Cargo')
+        ->where('e.ID_ESTADO','<>','2') 
         ->get();
 
         return view('lista_negra.create',["empleados"=>$empleado]);
@@ -84,7 +87,7 @@ class Lista_negraController extends Controller
         $ID_EMPLEADO=$request->get('IDEMPLEADO');
         $empleado=empleados::findOrFail($ID_EMPLEADO);
         
-        $empleado->ID_ESTADO='0';
+        $empleado->ID_ESTADO='2';
         $empleado->update();
 
         return Redirect::to('/lista_negra');
@@ -151,6 +154,12 @@ class Lista_negraController extends Controller
         //$proyecto->ESTADO='0';
        // $proyecto->delete();
         DB::table('lista_negra')->where('ID_EMPLEADO', '=', $id)->delete();
+     
+        $empleado=empleados::findOrFail($id);
+        
+        $empleado->ID_ESTADO='1';
+        $empleado->update();
+
         return Redirect::to('/lista_negra');
     }
 }
