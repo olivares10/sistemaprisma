@@ -1,0 +1,4 @@
+git status
+git add .
+git commit -m "Modifique el puesto de trabajo"
+git push
